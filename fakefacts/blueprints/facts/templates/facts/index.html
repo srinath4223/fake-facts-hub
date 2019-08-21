@@ -1,0 +1,82 @@
+{% extends 'layouts/base.html' %}
+{% import 'macros/form.html' as f with context %}
+
+{% block title %}Create and consume facts{% endblock %}
+
+{% block body %}
+
+{% raw %}
+<script id="facts-index-tpl" type="text/x-jsrender">
+  {{if data}}
+    {{for data ~editable=editable}}
+      <div id="fact-message-id-{{:id}}" class="fact-message md-margin-bottom clearfix">
+        <div class="well well-sm tiny-margin-bottom">
+          {{:message}}
+        </div>
+        <p class="small text-muted pull-left">Posted on {{shortDate:created_on}}</p>
+        {{if ~editable}}
+          <p class="small pull-right"><a class="fact-edit-btn-from-tpl" data-id="{{:id}}" href="#">Edit</a>, <a class="fact-delete-btn-from-tpl" data-id="{{:id}}" href="#">Delete</a></p>
+        {{/if}}
+      </div>
+    {{/for}}
+  {{else}}
+    <p>There are no facts for this user.</p>
+  {{/if}}
+</script>
+{% endraw %}
+
+<div id="fact-edit" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">You are about to edit this fact</h4>
+      </div>
+      <div class="modal-body">
+        <p id="form_error_modal" class="alert alert-danger"></p>
+        <textarea id="fact-edit-message" name="fact-edit-message" class="form-control" rows="3" maxlength="200" placeholder="It can be in between 1 and 200 characters"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button id="fact-edit-btn-cancel-from-modal" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button id="fact-edit-btn-from-modal" type="button" data-url="{{ url_for('FactsView:patch', id=0) }}" class="btn btn-danger">Update Fact</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="fact-delete" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Do you want to delete this fact?</h4>
+      </div>
+      <div class="modal-body" id="fact-delete-modal-body"></div>
+      <div class="modal-footer">
+        <button id="fact-delete-btn-cancel-from-modal" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button id="fact-delete-btn-from-modal" type="button" data-url="{{ url_for('FactsView:delete', id=0) }}" class="btn btn-danger">Delete Fact</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-7">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Facts by <strong class="display-username"></strong></h3>
+      </div>
+      <div class="panel-body">
+        <div id="facts-index-results" data-url="{{ url_for('FactsView:index') }}"></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-5">
+    {% if request.args.get('username') == current_user.username %}
+      {% include 'includes/post_fact.html' %}
+    {% endif %}
+    {% include 'includes/latest_community_facts.html' %}
+    {% include 'includes/who_is_online.html' %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% raw %}
+<script id="facts-latest-tpl" type="text/x-jsrender">
+  {{if data}}
+    {{for data}}
+      <div>
+        <p>
+          "{{:message}}"
+        </p>
+        <p class="small text-muted md-margin-bottom">Posted by <a href="/facts/?username={{:username}}">{{:username}}</a> on {{shortDate:created_on}}</p>
+      </div>
+    {{/for}}
+  {{else}}
+    <p>There are no latest community facts.</p>
+  {{/if}}
+</script>
+{% endraw %}
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Latest Community Facts</h3>
+  </div>
+  <div id="facts-latest-results" class="panel-body" data-url="{{ url_for('FactsView:latest') }}">
+  </div>
+</div>

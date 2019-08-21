@@ -1,0 +1,51 @@
+{% extends 'layouts/base.html' %}
+{% import 'macros/form.html' as f with context %}
+
+{% block title %}See who's posting fake facts{% endblock %}
+
+{% block body %}
+{% raw %}
+<script id="community-index-tpl" type="text/x-jsrender">
+  {{if data}}
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Username</th>
+        <th scope="col">Facts Posted</th>
+        <th scope="col">Join Date</th>
+      </tr>
+    </thead>
+    <tbody>
+    {{for data}}
+    <tr id="{{:username}}-facts-posted-row">
+      <td><a href="/facts/?username={{:username}}">{{:username}}</a></td>
+      <td id="{{:username}}-facts-posted">{{:facts_posted}}</td>
+      <td>{{shortDate:created_on}}</td>
+    </tr>
+    {{/for}}
+    </tbody>
+  </table>
+  {{else}}
+    <p>There are no community members.</p>
+  {{/if}}
+</script>
+{% endraw %}
+
+<div class="row">
+  <div class="col-md-7">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Explore the Fake Facts Community</h3>
+      </div>
+      <div class="panel-body">
+        <div id="community-index-results" data-url="{{ url_for('UserView:index') }}"></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-5">
+    {% include 'includes/post_fact.html' %}
+    {% include 'includes/latest_community_facts.html' %}
+    {% include 'includes/who_is_online.html' %}
+  </div>
+</div>
+{% endblock %}

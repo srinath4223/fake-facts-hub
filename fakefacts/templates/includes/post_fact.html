@@ -1,0 +1,20 @@
+<div class="panel panel-default md-margin-bottom">
+  <div class="panel-heading">
+    <h3 class="panel-title">Let's Hear Your Best Fake Fact</h3>
+  </div>
+  <div class="panel-body">
+    <p id="form_error" class="alert alert-danger"></p>
+    {% call f.form_tag('FactsView:post', fid='add_fact') %}
+      <div class="form-group">
+        <textarea id="fact-message" name="fact-message" class="form-control" rows="3" maxlength="200" placeholder="It can be in between 1 and 200 characters"></textarea>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <button type="submit" class="btn btn-primary btn-block">
+            Post Fake Fact
+          </button>
+        </div>
+      </div>
+    {% endcall %}
+  </div>
+</div>
