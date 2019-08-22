@@ -3,6 +3,7 @@ import random
 import time
 
 from faker import Faker
+from sqlalchemy import text
 
 from fakefacts.app import create_app
 from fakefacts.extensions import db
@@ -27,7 +28,7 @@ def cli():
     """
     while True:
         # A Postgres specific way to grab a random row.
-        user = User.query.order_by('RANDOM()').first()
+        user = User.query.order_by(text('RANDOM()')).first()
 
         fact = Fact()
         fact.user_id = user.id

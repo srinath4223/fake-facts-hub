@@ -1,7 +1,7 @@
 from sqlalchemy import desc
 
 from lib.util_sqlalchemy import ResourceMixin
-from fakefacts.extensions import db, marshmallow
+from fakefacts.extensions import db
 
 
 class Fact(ResourceMixin, db.Model):

@@ -1,5 +1,6 @@
 import pytest
 
+from config import settings
 from fakefacts.app import create_app
 
 
@@ -10,9 +11,11 @@ def app():
 
     :return: Flask app
     """
+    db_uri = '{0}_test'.format(settings.SQLALCHEMY_DATABASE_URI)
     params = {
         'DEBUG': False,
         'TESTING': True,
+        'SQLALCHEMY_DATABASE_URI': db_uri
     }
 
     _app = create_app(settings_override=params)

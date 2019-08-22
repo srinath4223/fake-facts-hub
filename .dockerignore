@@ -1,5 +1,2 @@
-.cache
 .git
-.vscode
-.coverage
 .dockerignore

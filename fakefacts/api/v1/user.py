@@ -1,5 +1,6 @@
 from flask import jsonify, request
 from flask_jwt_extended import jwt_required
+from marshmallow import ValidationError
 
 from fakefacts.api.v1 import V1FlaskView
 from fakefacts.blueprints.user.models import User
@@ -12,7 +13,7 @@ class UserView(V1FlaskView):
         users = User.query.all()
 
         response = {
-            'data': users_schema.dump(users).data
+            'data': users_schema.dump(users)
         }
 
         return jsonify(response), 200
@@ -25,11 +26,11 @@ class UserView(V1FlaskView):
 
             return response, 400
 
-        data, errors = registration_schema.load(json_data)
-
-        if errors:
+        try:
+            data = registration_schema.load(json_data)
+        except ValidationError as err:
             response = {
-                'error': errors
+                'error': err.messages
             }
 
             return jsonify(response), 422

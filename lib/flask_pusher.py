@@ -1,6 +1,6 @@
 from pusher import Pusher
 
-from instance import settings
+from config import settings
 
 pusher = Pusher(
     app_id=settings.PUSHER_APP_ID,

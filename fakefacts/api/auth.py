@@ -7,6 +7,7 @@ from flask_jwt_extended import (
     set_access_cookies,
     unset_jwt_cookies
 )
+from marshmallow import ValidationError
 
 from lib.flask_pusher import pusher
 from fakefacts.blueprints.user.models import User
@@ -26,11 +27,11 @@ class AuthView(FlaskView):
 
             return jsonify(response), 400
 
-        data, errors = auth_schema.load(json_data)
-
-        if errors:
+        try:
+            data = auth_schema.load(json_data)
+        except ValidationError as err:
             response = {
-                'error': errors
+                'error': err.messages
             }
 
             return jsonify(response), 422

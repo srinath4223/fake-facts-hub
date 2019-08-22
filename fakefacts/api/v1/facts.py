@@ -4,6 +4,7 @@ from flask_jwt_extended import (
     jwt_required,
     current_user
 )
+from marshmallow import ValidationError
 
 from lib.flask_pusher import pusher
 from fakefacts.extensions import db
@@ -43,7 +44,7 @@ class FactsView(V1FlaskView):
             user_id=user.id).order_by(Fact.created_on.desc())
 
         response = {
-             'data': facts_schema.dump(facts).data,
+             'data': facts_schema.dump(facts),
              'editable': editable
         }
 
@@ -58,11 +59,11 @@ class FactsView(V1FlaskView):
 
             return response, 400
 
-        data, errors = add_fact_schema.load(json_data)
-
-        if errors:
+        try:
+            data = add_fact_schema.load(json_data)
+        except ValidationError as err:
             response = {
-                'error': errors
+                'error': err.messages
             }
 
             return jsonify(response), 422
@@ -109,11 +110,11 @@ class FactsView(V1FlaskView):
 
             return jsonify(response), 400
 
-        data, errors = add_fact_schema.load(json_data)
-
-        if errors:
+        try:
+            data = add_fact_schema.load(json_data)
+        except ValidationError as err:
             response = {
-                'error': errors
+                'error': err.messages
             }
 
             return jsonify(response), 422

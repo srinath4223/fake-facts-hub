@@ -1,21 +1,41 @@
 from datetime import timedelta
 import os
 
+from datetime import timedelta
+from distutils.util import strtobool
 
-DEBUG = True
 
-SERVER_NAME = 'localhost:8000'
-SECRET_KEY = 'insecurekeyfordev'
+LOG_LEVEL = os.getenv('LOG_LEVEL', 'DEBUG')
 
-db_uri = 'postgresql://{0}:{1}@postgres:5432/{2}'.format(os.environ['POSTGRES_USER'],
-                                                         os.environ['POSTGRES_PASSWORD'],
-                                                         os.environ['POSTGRES_DB'])
-SQLALCHEMY_DATABASE_URI = db_uri
+SECRET_KEY = os.getenv('SECRET_KEY', None)
+
+SERVER_NAME = os.getenv('SERVER_NAME',
+                        'localhost:{0}'.format(os.getenv('DOCKER_WEB_PORT',
+                                                         '8000')))
+
+# SQLAlchemy.
+pg_user = os.getenv('POSTGRES_USER', 'fakefacts')
+pg_pass = os.getenv('POSTGRES_PASSWORD', 'password')
+pg_host = os.getenv('POSTGRES_HOST', 'postgres')
+pg_port = os.getenv('POSTGRES_PORT', '5432')
+pg_db = os.getenv('POSTGRES_DB', pg_user)
+db = 'postgresql://{0}:{1}@{2}:{3}/{4}'.format(pg_user, pg_pass,
+                                               pg_host, pg_port, pg_db)
+SQLALCHEMY_DATABASE_URI = db
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-SEED_USER_EMAIL = 'dev@local.host'
-SEED_USER_USERNAME = 'dev'
-SEED_USER_PASSWORD = 'password'
+# User.
+SEED_USER_EMAIL = os.getenv('SEED_USER_EMAIL', 'dev@local.host')
+SEED_USER_USERNAME = os.getenv('SEED_USER_USERNAME', 'dev')
+SEED_USER_PASSWORD = os.getenv('SEED_USER_PASSWORD', 'password')
+
+# Configure Pusher (you can leave the last 2 settings alone).
+PUSHER_APP_ID = os.getenv('PUSHER_APP_ID', None)
+PUSHER_KEY = os.getenv('PUSHER_KEY', None)
+PUSHER_SECRET = os.getenv('PUSHER_SECRET', None)
+PUSHER_CLUSTER = os.getenv('PUSHER_CLUSTER', 'us2')
+PUSHER_SSL = True
+PUSHER_AUTH_ENDPOINT = '/api/auth/pusher/'
 
 # Allow browsers to securely persist auth tokens but also include it in the
 # headers so that other clients can use the auth token too.
