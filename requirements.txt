@@ -18,7 +18,7 @@ SQLAlchemy-Utils==0.34.2
 # API.
 flask-classful==0.14
 flask-marshmallow==0.10.1
-flask-jwt-extended==3.21.0
+flask-jwt-extended==3.25.0
 marshmallow==3.0.1
 
 # Extensions and libraries.
