@@ -136,20 +136,3 @@ we talked about using Celery to contact third party APIs. This is a pretty good
 time to consider using Redis / Celery and then sending all pusher messages through
 Celery instead of directly through our main Flask / Click apps.
 
-
-
-Thank you for enrolling into this course:
-
-Sharing this course with your friends and followers has a significant impact on
-my ability to continue creating courses in the future.
-
-If you had a minute or 2 to spare and enjoyed the course, please link to
-https://buildasaasappwithflask.com on your social channels. If you tweet
-something out, please include the above URL and @nickjanetakis so I get notified.
-You may want to toss in the #Flask and #Python hash tags too, it's up to you!
-
-If you want to follow along I'm on Twitter at https://twitter.com/nickjanetakis
-and my personal site is at https://nickjanetakis.com.
-
-Happy coding,
-Nick
